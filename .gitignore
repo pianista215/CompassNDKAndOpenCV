@@ -1,3 +1,8 @@
 /bin/*.class
 /CompassNDKAndOpenCV/bin
 /CompassNDKAndOpenCV/gen/com/devsmobile/compassndkandopencv
+/CompassNDKAndOpenCV/gen/org/opencv
+/sdk/java/bin
+/sdk/java/gen/org/opencv
+/sdk/java/obj
+/CompassNDKAndOpenCV/obj
