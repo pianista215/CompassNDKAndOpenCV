@@ -20,13 +20,16 @@
 					<folderInfo id="com.android.toolchain.gcc.1457330676.163899634" name="/" resourcePath="">
 						<toolChain id="com.android.toolchain.gcc.894393898" name="com.android.toolchain.gcc" superClass="com.android.toolchain.gcc">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="com.android.targetPlatform.183738418" isAbstract="false" superClass="com.android.targetPlatform"/>
-							<builder id="com.android.builder.428965999" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Android Builder" superClass="com.android.builder">
+							<builder command="${NDKROOT}/ndk-build" id="com.android.builder.428965999" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Android Builder" superClass="com.android.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="obj"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="libs"/>
 								</outputEntries>
 							</builder>
 							<tool id="com.android.gcc.compiler.1334903727" name="Android GCC Compiler" superClass="com.android.gcc.compiler">
+								<option id="com.android.gcc.option.includePath.1479911073" superClass="com.android.gcc.option.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\OpenCV4Android\OpenCV-android-sdk\sdk\native\jni\include&quot;"/>
+								</option>
 								<inputType id="com.android.gcc.inputType.679397095" superClass="com.android.gcc.inputType"/>
 							</tool>
 						</toolChain>
@@ -48,5 +51,10 @@
 		<scannerConfigBuildInfo instanceId="com.android.toolchain.gcc.1457330676;com.android.toolchain.gcc.1457330676.163899634;com.android.gcc.compiler.1334903727;com.android.gcc.inputType.679397095">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.android.AndroidPerProjectProfile"/>
 		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Default">
+			<resource resourceType="PROJECT" workspacePath="/CompassNDKAndOpenCV"/>
+		</configuration>
 	</storageModule>
 </cproject>

@@ -1,5 +1,8 @@
 package com.devsmobile.compassndkandopencv.sensors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -18,6 +21,8 @@ public class CompassSensor implements SensorEventListener {
 
 	private Sensor accelerometer;
 	private Sensor magnetometer;
+	
+	private List<AzimuthListener> listeners = new ArrayList<AzimuthListener>();
 
 	/**
 	 * Singleton
@@ -36,6 +41,13 @@ public class CompassSensor implements SensorEventListener {
 			instance = new CompassSensor(ctx);
 		}
 		return instance;
+	}
+	
+	public CompassSensor addListener(AzimuthListener listener){
+		if(!listeners.contains(listener)){
+			listeners.add(listener);
+		}
+		return this;
 	}
 
 	/**
@@ -106,14 +118,29 @@ public class CompassSensor implements SensorEventListener {
 				if (azimuthInDegress < 0.0f) {
 				    azimuthInDegress += 360.0f;
 				}
-				Log.d(TAG,"Azimut:"+azimuthInDegress);
+				//Log.d(TAG,"Azimut:"+azimuthInDegress);
+				notify(azimuthInDegress);
 			}
+		}
+	}
+	
+	/**
+	 * Notify for listeners
+	 * @param newAzimuthValue
+	 */
+	private void notify(float newAzimuthValue){
+		for(AzimuthListener listener : listeners){
+			listener.onAzimuthChange(newAzimuthValue);
 		}
 	}
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		Log.d(TAG, "Accuracy changed:" + accuracy);
+		//Nothing to do
+	}
+	
+	public interface AzimuthListener {
+		public void onAzimuthChange(float azimuth);
 	}
 
 }

@@ -6,9 +6,8 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-
-import com.devsmobile.compassndkandopencv.sensors.CompassSensor;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,10 +15,12 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
-public class MainActivity extends Activity implements CvCameraViewListener2 {
+import com.devsmobile.compassndkandopencv.sensors.CompassSensor;
+
+public class MainActivity extends Activity implements CvCameraViewListener2,CompassSensor.AzimuthListener {
 	
 	private CameraBridgeViewBase mOpenCvCameraView;
-    private boolean              mIsJavaCamera = true;
+    private boolean mIsJavaCamera = true;
 	
 	private static final String TAG = "CompassNDK::Activity";
 	
@@ -32,6 +33,11 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
                 case LoaderCallbackInterface.SUCCESS:
                 {
                     Log.i(TAG, "OpenCV loaded successfully");
+                    
+                    // Load native library after(!) OpenCV initialization
+                    System.loadLibrary("CompassNDKAndOpenCV");
+
+                    
                     mOpenCvCameraView.enableView();
                 } break;
                 default:
@@ -78,7 +84,7 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
     {
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
-        CompassSensor.getInstance(this.getApplicationContext()).start();
+        CompassSensor.getInstance(this.getApplicationContext()).addListener(this).start();
     }
 
     public void onDestroy() {
@@ -93,19 +99,33 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
     
 	@Override
 	public void onCameraViewStarted(int width, int height) {
-		// TODO Auto-generated method stub
-		
+		mRgba = new Mat(height, width, CvType.CV_8UC4);
 	}
 
 	@Override
 	public void onCameraViewStopped() {
-		// TODO Auto-generated method stub
-		
+		mRgba.release();
 	}
+	
+	private Mat mRgba;
+	
+	private float balizaAzimuth = 100;
+	
+	private float currentAzimuth = 0;
 
 	@Override
 	public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-		return inputFrame.rgba();
+		mRgba = inputFrame.rgba();
+		paintAzimuth(mRgba.getNativeObjAddr(), balizaAzimuth, currentAzimuth);
+		return mRgba;
+	}
+	
+	public native void paintAzimuth(long matAddrRgba, float balizaAzimuth, float azimuth);
+
+	@Override
+	public void onAzimuthChange(float azimuth) {
+		Log.d(TAG, "Current Azimith"+azimuth);
+		this.currentAzimuth = azimuth;
 	}
 	
 }
