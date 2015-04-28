@@ -8,6 +8,8 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 
+import com.devsmobile.compassndkandopencv.sensors.CompassSensor;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,8 +65,12 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
     public void onPause()
     {
         super.onPause();
-        if (mOpenCvCameraView != null)
+        
+        CompassSensor.getInstance(this.getApplicationContext()).stop();
+        if (mOpenCvCameraView != null){
             mOpenCvCameraView.disableView();
+        }
+        
     }
 
     @Override
@@ -72,10 +78,12 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
     {
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
+        CompassSensor.getInstance(this.getApplicationContext()).start();
     }
 
     public void onDestroy() {
         super.onDestroy();
+        CompassSensor.getInstance(this.getApplicationContext()).stop();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
     }
