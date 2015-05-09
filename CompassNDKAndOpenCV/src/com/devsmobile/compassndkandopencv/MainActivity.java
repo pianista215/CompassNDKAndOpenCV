@@ -100,12 +100,18 @@ public class MainActivity extends Activity implements CvCameraViewListener2,Comp
 	@Override
 	public void onCameraViewStarted(int width, int height) {
 		mRgba = new Mat(height, width, CvType.CV_8UC4);
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
 	public void onCameraViewStopped() {
 		mRgba.release();
 	}
+	
+	private int width;
+	
+    private int height;
 	
 	private Mat mRgba;
 	
@@ -116,11 +122,11 @@ public class MainActivity extends Activity implements CvCameraViewListener2,Comp
 	@Override
 	public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
 		mRgba = inputFrame.rgba();
-		paintAzimuth(mRgba.getNativeObjAddr(), balizaAzimuth, currentAzimuth);
+		paintAzimuth(mRgba.getNativeObjAddr(), this.width, this.height, balizaAzimuth, currentAzimuth);
 		return mRgba;
 	}
 	
-	public native void paintAzimuth(long matAddrRgba, float balizaAzimuth, float azimuth);
+	public native void paintAzimuth(long matAddrRgba, int width, int height, float balizaAzimuth, float azimuth);
 
 	@Override
 	public void onAzimuthChange(float azimuth) {

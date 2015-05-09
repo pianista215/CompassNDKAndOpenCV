@@ -115,9 +115,11 @@ public class CompassSensor implements SensorEventListener {
 				float orientation[] = new float[3];
 				SensorManager.getOrientation(R, orientation);
 				float azimuthInDegress = (float)Math.toDegrees(orientation[0]);
-				if (azimuthInDegress < 0.0f) {
-				    azimuthInDegress += 360.0f;
-				}
+				
+				//By default for simplicity device is at landscape, add 90 to the orientation
+				//TODO: DETECT ORIENTATION
+				azimuthInDegress = ( azimuthInDegress + 360 + 90 ) % 360;
+				
 				//Log.d(TAG,"Azimut:"+azimuthInDegress);
 				notify(azimuthInDegress);
 			}
