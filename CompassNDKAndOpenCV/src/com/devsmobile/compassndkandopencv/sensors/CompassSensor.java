@@ -115,12 +115,13 @@ public class CompassSensor implements SensorEventListener {
 				float orientation[] = new float[3];
 				SensorManager.getOrientation(R, orientation);
 				float azimuthInDegress = (float)Math.toDegrees(orientation[0]);
+				float pitchInDegrees = (float)Math.toDegrees(orientation[1]);
+				float rollInDegrees = (float)Math.toDegrees(orientation[2]);
 				
-				//By default for simplicity device is at landscape, add 90 to the orientation
-				//TODO: DETECT ORIENTATION
-				azimuthInDegress = ( azimuthInDegress + 360 + 90 ) % 360;
+				//Get real direction of what is pointing the user
+				azimuthInDegress = ( azimuthInDegress + 360 - rollInDegrees) % 360;
 				
-				//Log.d(TAG,"Azimut:"+azimuthInDegress);
+				Log.d(TAG,"Pitch:"+pitchInDegrees+" Roll:"+rollInDegrees);
 				notify(azimuthInDegress);
 			}
 		}
