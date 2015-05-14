@@ -126,7 +126,7 @@ public class MainActivity extends Activity implements CvCameraViewListener2,Comp
 		return mRgba;
 	}
 	
-	public native void paintAzimuth(long matAddrRgba, int width, int height, float balizaAzimuth, float azimuth);
+	public native void paintAzimuth(long matAddrRgba, int width, int height, float markerOrientation, float orientation);
 
 	@Override
 	public void onAzimuthChange(float azimuth) {
