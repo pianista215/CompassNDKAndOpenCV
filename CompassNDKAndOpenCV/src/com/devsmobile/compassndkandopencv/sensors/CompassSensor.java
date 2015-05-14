@@ -119,7 +119,7 @@ public class CompassSensor implements SensorEventListener {
 				float rollInDegrees = (float)Math.toDegrees(orientation[2]);
 				
 				//Get real direction of what is pointing the user
-				azimuthInDegress = ( azimuthInDegress + 360 - rollInDegrees) % 360;
+				azimuthInDegress = ( azimuthInDegress + 360 + 90) % 360;
 				
 				Log.d(TAG,"Pitch:"+pitchInDegrees+" Roll:"+rollInDegrees);
 				notify(azimuthInDegress);
